@@ -1,8 +1,15 @@
 package com.github.x6ud.ptoy.sprite;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
+public class BaseSprite {
 
-public abstract class BaseSprite {
+    public static BaseSprite chain(BaseSprite... sprites) {
+        for (int i = 0; i < sprites.length - 1; ++i) {
+            BaseSprite curr = sprites[i];
+            BaseSprite next = sprites[i + 1];
+            curr.addToBottom(next);
+        }
+        return sprites[0];
+    }
 
     private BaseSprite parent;
     private BaseSprite prev;
@@ -10,35 +17,35 @@ public abstract class BaseSprite {
     private BaseSprite firstChild;
     private BaseSprite lastChild;
 
-    public final void addToTop(BaseSprite sprite) {
-        if (this.parent != null) {
+    public void addToTop(BaseSprite child) {
+        if (child.parent != null) {
             throw new RuntimeException("Sprite already has a parent.");
         }
-        sprite.parent = this;
+        child.parent = this;
         if (this.firstChild != null) {
-            this.firstChild.prev = sprite;
-            sprite.next = this.firstChild;
-            this.firstChild = sprite;
+            this.firstChild.prev = child;
+            child.next = this.firstChild;
+            this.firstChild = child;
         } else {
-            this.firstChild = this.lastChild = sprite;
+            this.firstChild = this.lastChild = child;
         }
     }
 
-    public final void addToBottom(BaseSprite sprite) {
-        if (this.parent != null) {
+    public void addToBottom(BaseSprite child) {
+        if (child.parent != null) {
             throw new RuntimeException("Sprite already has a parent.");
         }
-        sprite.parent = this;
+        child.parent = this;
         if (this.lastChild != null) {
-            this.lastChild.next = sprite;
-            sprite.prev = this.lastChild;
-            this.lastChild = sprite;
+            this.lastChild.next = child;
+            child.prev = this.lastChild;
+            this.lastChild = child;
         } else {
-            this.firstChild = this.lastChild = sprite;
+            this.firstChild = this.lastChild = child;
         }
     }
 
-    public final void remove() {
+    public void remove() {
         if (this.parent == null) {
             throw new RuntimeException("Sprite hasn't been added to list.");
         }
@@ -57,7 +64,7 @@ public abstract class BaseSprite {
         this.onRemoved();
     }
 
-    public final void removeAllChildren() {
+    public void removeAllChildren() {
         for (BaseSprite curr = this.lastChild; curr != null; ) {
             BaseSprite next = curr.next;
             curr.remove();
@@ -65,44 +72,47 @@ public abstract class BaseSprite {
         }
     }
 
-    public final void update(float secs) {
+    public void update(float secs) {
         this.onUpdate(secs);
         for (BaseSprite curr = this.firstChild; curr != null; curr = curr.next) {
             curr.update(secs);
         }
     }
 
-    public final void draw(Batch batch) {
-        this.onRender(batch);
+    public void draw() {
+        this.onDraw();
         for (BaseSprite curr = this.lastChild; curr != null; curr = curr.prev) {
-            curr.draw(batch);
+            curr.draw();
         }
     }
 
-    public final BaseSprite parent() {
+    public BaseSprite parent() {
         return parent;
     }
 
-    public final BaseSprite prev() {
+    public BaseSprite prev() {
         return prev;
     }
 
-    public final BaseSprite next() {
+    public BaseSprite next() {
         return next;
     }
 
-    public final BaseSprite firstChild() {
+    public BaseSprite firstChild() {
         return firstChild;
     }
 
-    public final BaseSprite lastChild() {
+    public BaseSprite lastChild() {
         return lastChild;
     }
 
-    public abstract void onRemoved();
+    public void onRemoved() {
+    }
 
-    public abstract void onUpdate(float secs);
+    public void onUpdate(float secs) {
+    }
 
-    public abstract void onRender(Batch batch);
+    public void onDraw() {
+    }
 
 }

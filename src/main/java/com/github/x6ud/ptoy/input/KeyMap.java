@@ -5,16 +5,6 @@ import com.badlogic.gdx.Input;
 
 public final class KeyMap {
 
-    private static final DoublePressDetector leftDoublePressDetector = new DoublePressDetector();
-    private static final DoublePressDetector rightDoublePressDetector = new DoublePressDetector();
-
-    public static void update(float secs) {
-        leftDoublePressDetector.update(isLeftPressed(), secs);
-        rightDoublePressDetector.update(isRightPressed(), secs);
-    }
-
-    // ===================================================
-
     public static boolean isLeftPressed() {
         return Gdx.input.isKeyPressed(Input.Keys.LEFT);
     }
@@ -28,12 +18,8 @@ public final class KeyMap {
                 || Gdx.input.isKeyPressed(Input.Keys.Z);
     }
 
-    public static boolean isLeftDoublePressed() {
-        return leftDoublePressDetector.isKeyDoublePressed();
-    }
-
-    public static boolean isRightDoublePressed() {
-        return rightDoublePressDetector.isKeyDoublePressed();
+    public static boolean isDashPressed() {
+        return Gdx.input.isKeyPressed(Input.Keys.X);
     }
 
 }

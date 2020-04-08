@@ -7,8 +7,8 @@ public class Main {
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = Global.VIEWPORT_WIDTH;
-        config.height = Global.VIEWPORT_HEIGHT;
+        config.width = Config.WINDOW_WIDTH;
+        config.height = Config.WINDOW_HEIGHT;
         config.resizable = false;
         new LwjglApplication(new Game(), config);
     }

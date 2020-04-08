@@ -1,6 +1,5 @@
 package com.github.x6ud.ptoy.platformer.map;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.github.x6ud.ptoy.physics.BodyContactListener;
@@ -35,6 +34,7 @@ public class WallOneWay extends BaseSprite implements BodyContactListener {
         Physics.contact.addListener(body, this);
     }
 
+    @Override
     public void onRemoved() {
         Physics.contact.removeListener(body);
         Physics.world.destroyBody(body);
@@ -58,12 +58,6 @@ public class WallOneWay extends BaseSprite implements BodyContactListener {
     }
 
     public void onPostSolve(Fixture self, Fixture other, Vector2 normal, Contact contact, ContactImpulse impulse) {
-    }
-
-    public void onUpdate(float secs) {
-    }
-
-    public void onRender(Batch batch) {
     }
 
 }

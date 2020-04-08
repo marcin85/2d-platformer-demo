@@ -1,6 +1,5 @@
 package com.github.x6ud.ptoy.platformer.map;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -36,14 +35,9 @@ public class WallStrip extends BaseSprite {
         body.createFixture(fixtureDef);
     }
 
+    @Override
     public void onRemoved() {
         Physics.world.destroyBody(body);
-    }
-
-    public void onUpdate(float secs) {
-    }
-
-    public void onRender(Batch batch) {
     }
 
 }

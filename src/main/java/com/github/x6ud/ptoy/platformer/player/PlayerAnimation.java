@@ -1,13 +1,13 @@
 package com.github.x6ud.ptoy.platformer.player;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.github.x6ud.ptoy.Global;
+import com.github.x6ud.ptoy.Canvas;
+import com.github.x6ud.ptoy.Config;
 import com.github.x6ud.ptoy.enums.HorizontalDirection;
+import com.github.x6ud.ptoy.utils.ResourceUtils;
 
 class PlayerAnimation {
 
@@ -29,8 +29,8 @@ class PlayerAnimation {
 
     private static final int FRAME_WIDTH = 32;
     private static final int FRAME_HEIGHT = 32;
-    private static final float OFFSET_X = 6f / Global.PIXELS_PER_METER;
-    private static final float OFFSET_Y = 6f / Global.PIXELS_PER_METER;
+    private static final float OFFSET_X = 4f / Config.PIXELS_PER_METER;
+    private static final float OFFSET_Y = 4f / Config.PIXELS_PER_METER;
 
     private static final float ROTATION_TRANSITION_DURATION_SECS = 0.05f;
     private static final float RUNNING_SPEED_MIN_RATE = 0.5f;
@@ -48,7 +48,7 @@ class PlayerAnimation {
 
     @SuppressWarnings("unchecked")
     PlayerAnimation() {
-        texture = new Texture(Gdx.files.internal("sprites/player.png"));
+        texture = ResourceUtils.loadTexture("textures/sprites/player.png");
 
         animations = (Animation<TextureRegion>[]) new Animation[7];
 
@@ -149,6 +149,7 @@ class PlayerAnimation {
         Vector2 moveNormal = player.lockFacingDirectionForAnimation ? new Vector2(facingDirection.value(), 0) : player.moveNormal;
 
         // direction
+        boolean flipped = direction != facingDirection;
         direction = facingDirection;
 
         // rotation
@@ -166,7 +167,7 @@ class PlayerAnimation {
                 }
             }
         }
-        if (Math.abs(newRotation - rotation) < 90) {
+        if (!flipped && (rotation < 90 && newRotation < 90 || rotation >= 90 && newRotation >= 90)) {
             rotation = rotation + (newRotation - rotation) * Math.min(1, secs / ROTATION_TRANSITION_DURATION_SECS);
         } else {
             rotation = newRotation;
@@ -194,12 +195,14 @@ class PlayerAnimation {
         }
     }
 
-    void draw(Batch batch) {
+    void draw() {
         Animation<TextureRegion> animation = animations[state.index];
 
         TextureRegion textureRegion = animation.getKeyFrame(stateTime);
         boolean flip = direction == HorizontalDirection.LEFT;
-        batch.draw(
+
+        Canvas.begin();
+        Canvas.batch.draw(
                 textureRegion.getTexture(),
                 x - Player.BODY_RADIUS - OFFSET_X,
                 y - Player.BODY_RADIUS - OFFSET_Y,
@@ -217,6 +220,7 @@ class PlayerAnimation {
                 flip,
                 false
         );
+        Canvas.end();
     }
 
 }

@@ -5,8 +5,8 @@
 | Operation | Action |
 | --- | --- |
 | ←, → | Move |
-| ←←, →→ | Dash |
 | Z, Space | Jump |
+| X | Dash |
 
 
 ## Test

@@ -1,4 +1,4 @@
-package com.github.x6ud.ptoy.testcase;
+package com.github.x6ud.testcase;
 
 import com.badlogic.gdx.math.Vector2;
 import com.github.x6ud.ptoy.Director;
@@ -6,9 +6,9 @@ import com.github.x6ud.ptoy.platformer.map.Trampoline;
 import com.github.x6ud.ptoy.platformer.map.WallOneWay;
 import com.github.x6ud.ptoy.platformer.map.WallStrip;
 import com.github.x6ud.ptoy.platformer.player.Player;
-import com.github.x6ud.ptoy.sprite.SpriteContainer;
+import com.github.x6ud.ptoy.sprite.BaseSprite;
 
-public class Testcase1 extends SpriteContainer {
+public class Testcase1 extends BaseSprite {
 
     private Player player = new Player();
 

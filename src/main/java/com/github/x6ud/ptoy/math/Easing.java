@@ -1,4 +1,4 @@
-package com.github.x6ud.ptoy;
+package com.github.x6ud.ptoy.math;
 
 public class Easing {
 

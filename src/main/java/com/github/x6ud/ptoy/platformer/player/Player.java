@@ -1,11 +1,10 @@
 package com.github.x6ud.ptoy.platformer.player;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.github.x6ud.ptoy.Easing;
-import com.github.x6ud.ptoy.input.KeyMap;
 import com.github.x6ud.ptoy.enums.HorizontalDirection;
+import com.github.x6ud.ptoy.input.KeyMap;
+import com.github.x6ud.ptoy.math.Easing;
 import com.github.x6ud.ptoy.physics.BodyContactListener;
 import com.github.x6ud.ptoy.physics.Physics;
 import com.github.x6ud.ptoy.sprite.BaseSprite;
@@ -20,7 +19,7 @@ public class Player extends BaseSprite implements BodyContactListener {
     static final float MOVING_MAX_SPEED = 12f;
     static final float MOVING_ACCELERATION = MOVING_MAX_SPEED * 5f;
     static final float MOVING_ACCELERATION_OFF_GROUND = MOVING_ACCELERATION * 0.3f;
-    static final float FRICTION_DECELERATION = MOVING_ACCELERATION * 0.35f;
+    static final float FRICTION_DECELERATION = MOVING_ACCELERATION * 1.5f;
 
     static final float JUMPING_TAKEOFF_SPEED = MOVING_MAX_SPEED * 0.65f;
     static final float JUMPING_HOLD_RESIST_GRAVITY_SCALAR = 0.8f;
@@ -83,6 +82,7 @@ public class Player extends BaseSprite implements BodyContactListener {
         Physics.contact.addListener(body, this);
     }
 
+    @Override
     public void onRemoved() {
         Physics.contact.removeListener(body);
         Physics.world.destroyBody(body);
@@ -142,6 +142,7 @@ public class Player extends BaseSprite implements BodyContactListener {
         return body.getPosition();
     }
 
+    @Override
     public void onUpdate(float secs) {
         boolean isOnGround = contactingGroundFixture != null;
 
@@ -218,7 +219,7 @@ public class Player extends BaseSprite implements BodyContactListener {
         if (dashCooling > 0) {
             dashCooling -= secs;
         }
-        if (KeyMap.isLeftDoublePressed() || KeyMap.isRightDoublePressed()) {
+        if (KeyMap.isDashPressed() && moveKeyPressed) {
             // dash start
             if (!dashPressed && !dashing && dashCooling <= 0) {
                 dashPressed = true;
@@ -312,8 +313,9 @@ public class Player extends BaseSprite implements BodyContactListener {
         animation.update(this, secs);
     }
 
-    public void onRender(Batch batch) {
-        animation.draw(batch);
+    @Override
+    public void onDraw() {
+        animation.draw();
     }
 
 }
